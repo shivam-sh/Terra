@@ -7,15 +7,15 @@
  */
 
 // Camera Options
-let cHeight = 250;
-let cSpeed = 0.25;
+let cHeight = 150;
+let cSpeed = 0.5;
 
 // Terrain Options
-let scale = 500;
+let scale = 250;
 let smoothness = 20;
-let tSpan = 40;
-let tDepth = 40;
-let tHeight = 25;
+let tSpan = 50;
+let tDepth = 30;
+let tHeight = 60;
 
 // Global Variables
 let pos;
@@ -28,56 +28,41 @@ function setup() {
 	// Create a position vector and a camera to keep track of the person's location and view
 	pos = createVector(0, 0, 0);
 	camera = createCamera();
+
+	// Initialize the terrain cache
+	initCache(pos);
+
+	// Tilt the camera downwards
+	camera.tilt(PI / 6);
 }
 
 function draw() {
 	// Draw a dark background
-	background(100);
+	background(50);
 	// Place tha camera at the current location with an appropriate height
-	camera.setPosition(
-		pos.x * scale,
-		heightAt(pos.x, pos.z) - cHeight,
-		pos.z * scale
-	);
+	camera.setPosition(pos.x * scale, -3600, pos.z * scale + 4000);
 
 	// Draw the terrain
-	// Start from the back and draw each row moving forwards
-	for (let z = floor(pos.z) + tSpan / 2; z > floor(pos.z) - tSpan / 2; z--) {
-		// Make a triangle strip across the whole row
-		beginShape(TRIANGLE_STRIP);
-		for (
-			let x = floor(pos.x) - tDepth / 2;
-			x < floor(pos.x) + tDepth / 2;
-			x++
-		) {
-			/*
-			 * Draw each vertex in this order to make a triangle strip
-			 *
-			 * 	3-------4 7-------8
-			 *  | \		| |	\	  |
-			 *  |   \	| |	  \	  |	
-			 *  |	  \ | |		\ |
-			 *  1-------2 5-------6	...
-			 */
-			vertex(x * scale, heightAt(x, z), z * scale);
-			vertex((x + 1) * scale, heightAt(x + 1, z), z * scale);
-			vertex(x * scale, heightAt(x, z - 1), (z - 1) * scale);
-			vertex((x + 1) * scale, heightAt(x + 1, z - 1), (z - 1) * scale);
-		}
-		endShape();
-	}
+	updateCache(pos);
+	drawTerrainFromCache();
 
 	// Check to see if any keys were pressed
 	keyCheck();
+
+	// Move the camera over the terrain
+	pos.z -= cSpeed;
 }
 
 // Check for what the height at any (x, z) value should be (across the horizontal plane)
 function heightAt(x, z) {
 	// Map the (x,z) coordinates to the much more dense perlin noise space
-	return (
-		tHeight *
-		scale *
-		noise((x + 10000) / smoothness, (z + 10000) / smoothness)
+	return -(
+		(tHeight *
+			noise(
+				(x + 100000) / (scale * smoothness),
+				(z + 100000) / (scale * smoothness)
+			)) **
+		2
 	);
 }
 
@@ -86,7 +71,7 @@ function keyCheck() {
 	// Check if the W A S D keys are pressed, and move the person accordingly
 	if (keyIsDown(87)) pos.z -= cSpeed;
 	if (keyIsDown(65)) pos.x -= cSpeed;
-	if (keyIsDown(83)) pos.z += cSpeed;
+	if (keyIsDown(83)) pos.z += 2 * cSpeed;
 	if (keyIsDown(68)) pos.x += cSpeed;
 
 	// Check if the ↑ ↓ ← → keys are pressed, and move the camera accordingly
@@ -94,5 +79,4 @@ function keyCheck() {
 	if (keyIsDown(37)) camera.pan(PI / 60);
 	if (keyIsDown(40)) camera.tilt(PI / 60);
 	if (keyIsDown(39)) camera.pan(-PI / 60);
-	
 }
