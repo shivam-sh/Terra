@@ -7,13 +7,15 @@
  */
 
 // Camera Options
-let cHeight = 150;
-let cSpeed = 0.5;
+let cSpeed = 50;
+let cHeight = -3500;
+let xOffset = 0;
+let zOffset = 3500;
 
 // Terrain Options
 let scale = 250;
 let smoothness = 20;
-let tSpan = 50;
+let tSpan = 40;
 let tDepth = 30;
 let tHeight = 60;
 
@@ -40,7 +42,7 @@ function draw() {
 	// Draw a dark background
 	background(50);
 	// Place tha camera at the current location with an appropriate height
-	camera.setPosition(pos.x * scale, -3600, pos.z * scale + 4000);
+	camera.setPosition(pos.x + xOffset, cHeight, pos.z + zOffset);
 
 	// Draw the terrain
 	updateCache(pos);

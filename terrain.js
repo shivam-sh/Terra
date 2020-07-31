@@ -6,10 +6,10 @@
  */
 
 let terrainCache;
-let cachePos;
+let cachedPosition;
 
 // Create an array of an appropriate size to store cached terrain values
-function initCache(pos) {
+function initCache(position) {
 	// Set size according to span and depth (render distance)
 	terrainCache = new Array(tSpan);
 	for (let i = 0; i < terrainCache.length; i++) {
@@ -17,10 +17,10 @@ function initCache(pos) {
     }
 
 	// Save the position that the current terrain represents
-	cachePos = createVector(floor(pos.x), floor(pos.y), floor(pos.z));
+	cachedPosition = createVector(floor(position.x / scale) * scale, floor(position.y / scale) * scale, floor(position.z / scale) * scale);
 
-	let xStart = cachePos.x - tSpan * scale / 2;
-	let zStart = cachePos.z - tDepth * scale / 2;
+	let xStart = cachedPosition.x - tSpan * scale / 2;
+	let zStart = cachedPosition.z - tDepth * scale / 2;
 
 	for (let i = 0; i < terrainCache.length; i++) {
 		for (let j = 0; j < terrainCache[0].length; j++) {
@@ -35,10 +35,10 @@ function initCache(pos) {
 // Update the cache to represent the current terrain
 function updateCache(position) {
 	// Save the position that the current terrain represents
-	cachePos = createVector(floor(pos.x), floor(pos.y), floor(pos.z));
+	cachedPosition = createVector(floor(position.x / scale) * scale, floor(position.y / scale) * scale, floor(position.z / scale) * scale);
 	
-	let xStart = cachePos.x * scale - tSpan * scale / 2;
-	let zStart = cachePos.z * scale - tDepth * scale / 2;
+	let xStart = cachedPosition.x - tSpan * scale / 2;
+	let zStart = cachedPosition.z - tDepth * scale / 2;
 	
 	for (let i = 0; i < terrainCache.length; i++) {
 		for (let j = 0; j < terrainCache[0].length; j++) {
