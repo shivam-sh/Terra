@@ -13,7 +13,7 @@ let xOffset = 0;
 let zOffset = 3500;
 
 // Terrain Options
-let scale = 250;
+let tScale = 250;
 let smoothness = 20;
 let tSpan = 40;
 let tDepth = 30;
@@ -32,7 +32,7 @@ function setup() {
 	camera = createCamera();
 
 	// Initialize the terrain cache
-	initCache(pos);
+	initCache(pos, tSpan, tDepth, tScale);
 
 	// Tilt the camera downwards
 	camera.tilt(PI / 6);
@@ -45,7 +45,7 @@ function draw() {
 	camera.setPosition(pos.x + xOffset, cHeight, pos.z + zOffset);
 
 	// Draw the terrain
-	updateCache(pos);
+	updateCache(pos, tSpan, tDepth, tScale);
 	drawTerrainFromCache();
 
 	// Check to see if any keys were pressed
@@ -61,8 +61,8 @@ function heightAt(x, z) {
 	return -(
 		(tHeight *
 			noise(
-				(x + 100000) / (scale * smoothness),
-				(z + 100000) / (scale * smoothness)
+				(x + 100000) / (tScale * smoothness),
+				(z + 100000) / (tScale * smoothness)
 			)) **
 		2
 	);
