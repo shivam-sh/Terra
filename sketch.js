@@ -7,17 +7,17 @@
  */
 
 // Camera Options
-let cSpeed = 50;
-let cHeight = -3500;
+let cSpeed = 100;
+let cHeight = -3000;
 let xOffset = 0;
-let zOffset = 3500;
+let zOffset = 3000;
 
 // Terrain Options
-let tScale = 250;
+let tScale = 300;
 let smoothness = 20;
 let tSpan = 40;
 let tDepth = 30;
-let tHeight = 60;
+let tHeight = 65;
 
 // Global Variables
 let pos;
@@ -44,7 +44,7 @@ function draw() {
 	// Place tha camera at the current location with an appropriate height
 	camera.setPosition(pos.x + xOffset, cHeight, pos.z + zOffset);
 
-	// Draw the terrain
+	// Update and draw the terrain
 	updateCache(pos, tSpan, tDepth, tScale);
 	drawTerrainFromCache();
 
