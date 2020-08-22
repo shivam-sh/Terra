@@ -7,7 +7,7 @@
  */
 
 // Camera Options
-let cSpeed = 100;
+let cSpeed = 50;
 let cHeight = -3000;
 let xOffset = 0;
 let zOffset = 3000;
@@ -28,7 +28,8 @@ function setup() {
 	let canvasDiv = document.getElementById("canvas");
 	let width = canvasDiv.offsetWidth;
 	let height = canvasDiv.offsetHeight;
-	createCanvas(width, height, WEBGL);
+	let canvas = createCanvas(width, height, WEBGL);
+	canvas.parent("canvas");
 
 	// Create a position vector and a camera to keep track of the person's location and view
 	pos = createVector(0, 0, 0);
