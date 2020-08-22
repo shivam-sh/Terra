@@ -25,7 +25,10 @@ let camera;
 
 function setup() {
 	// Create the canvas to enable output to the webpage
-	createCanvas(windowWidth, windowHeight, WEBGL);
+	let canvasDiv = document.getElementById("canvas");
+	let width = canvasDiv.offsetWidth;
+	let height = canvasDiv.offsetHeight;
+	createCanvas(width, height, WEBGL);
 
 	// Create a position vector and a camera to keep track of the person's location and view
 	pos = createVector(0, 0, 0);
